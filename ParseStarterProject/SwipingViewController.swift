@@ -18,9 +18,22 @@ class SwipingViewController: UIViewController {
     
     @IBOutlet weak var infoLBL: UILabel!
     
+    var displayedUserId = ""
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        let gesture = UIPanGestureRecognizer(target: self, action: #selector(SwipingViewController.wasDragged(_:)))
+        
+        userImage.addGestureRecognizer(gesture)
+        
+        userImage.userInteractionEnabled = true
+        
+        updateImage()
+        
+    }
+    
+    func updateImage() {
         let query = PFUser.query()!
         
         var interestedIn = "male"
@@ -37,6 +50,22 @@ class SwipingViewController: UIViewController {
         
         query.whereKey("gender", equalTo: interestedIn)
         query.whereKey("interestedInWomen", equalTo: isFemale)
+        
+        var ignoredUsers = [""]
+        
+        if let acceptedUsers = PFUser.currentUser()?["accepted"] {
+            
+            ignoredUsers += acceptedUsers as! Array
+
+        }
+        
+        if let rejectedUsers = PFUser.currentUser()?["rejected"] {
+            
+            ignoredUsers += rejectedUsers as! Array
+        }
+        
+        query.whereKey("objectId", notContainedIn: ignoredUsers)
+        
         query.limit = 1
         
         query.findObjectsInBackgroundWithBlock({ (objects, error) in
@@ -51,6 +80,8 @@ class SwipingViewController: UIViewController {
                 print(objects.count)
                 
                 for object in objects {
+                    
+                    self.displayedUserId = object.objectId!
                     
                     let imageFile = object["image"] as! PFFile
                     
@@ -73,6 +104,56 @@ class SwipingViewController: UIViewController {
             }
             
         })
+    }
+    
+    func wasDragged(gesture: UIPanGestureRecognizer) {
+        
+        let transalation = gesture.translationInView(self.view)
+        
+        let label = gesture.view!
+        
+        label.center = CGPoint(x: self.view.bounds.width / 2 + transalation.x, y: self.view.bounds.height / 2 + transalation.y)
+        
+        let xFromCenter = label.center.x - self.view.bounds.width / 2
+        
+        let scale = min(100/abs(xFromCenter), 1)
+        
+        var rotation = CGAffineTransformMakeRotation(xFromCenter / 200)
+        
+        var stretch = CGAffineTransformScale(rotation, scale, scale)
+        
+        label.transform = stretch
+        
+        if gesture.state == UIGestureRecognizerState.Ended {
+            
+            var acceptedOrRejected = ""
+        
+            if label.center.x < 100 {
+                
+                acceptedOrRejected = "rejected"
+            }
+            if label.center.x > self.view.bounds.width - 100 {
+                
+                acceptedOrRejected = "accepted"
+            }
+            
+            if acceptedOrRejected != "" {
+                
+                PFUser.currentUser()?.addUniqueObjectsFromArray([displayedUserId], forKey: acceptedOrRejected)
+                
+                PFUser.currentUser()?.saveInBackground()
+            }
+            
+            rotation = CGAffineTransformMakeRotation(0)
+            
+            stretch = CGAffineTransformScale(rotation, 1, 1)
+            
+            label.transform = stretch
+            
+            label.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)
+            
+            updateImage()
+        }
         
     }
 
