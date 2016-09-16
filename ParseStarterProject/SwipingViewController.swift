@@ -29,6 +29,16 @@ class SwipingViewController: UIViewController {
         
         userImage.userInteractionEnabled = true
         
+        PFGeoPoint.geoPointForCurrentLocationInBackground { (geoPoint, error) in
+            
+            if let geoPoint = geoPoint {
+                
+                PFUser.currentUser()?["location"] = geoPoint
+                PFUser.currentUser()?.saveInBackground()
+            }
+            
+        }
+        
         updateImage()
         
     }
@@ -36,6 +46,13 @@ class SwipingViewController: UIViewController {
     func updateImage() {
         let query = PFUser.query()!
         
+//        if let latitude = PFUser.currentUser()?["location"].latitude {
+//        
+//            if let longitude = PFUser.currentUser()?["location"].longitude {
+//            
+//                query.whereKey("location", withinGeoBoxFromSouthwest: PFGeoPoint(latitude: latitude - 1, longitude: longitude - 1), toNortheast: PFGeoPoint(latitude: latitude + 1, longitude: longitude + 1))
+//            }
+//        }
         var interestedIn = "male"
         
         if (PFUser.currentUser()?["interestedInWomen"])! as! Bool == true {

@@ -82,6 +82,11 @@
                                                 <segue destination="BYZ-38-t0r" kind="show" identifier="logOut" id="NVS-57-Ncc"/>
                                             </connections>
                                         </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="View Contacts" id="E0J-kf-Nh8">
+                                            <connections>
+                                                <segue destination="EeB-iI-1bt" kind="show" id="5Uz-PR-qs0"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -126,6 +131,48 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Swx-Wc-VZW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="776" y="-534"/>
+        </scene>
+        <!--Contacts View Controller-->
+        <scene sceneID="A1I-UZ-21M">
+            <objects>
+                <tableViewController id="EeB-iI-1bt" customClass="ContactsViewController" customModule="ParseStarterProject_Swift" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="50K-pS-EtK">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <navigationBar key="tableHeaderView" contentMode="scaleToFill" id="2Ve-js-f5r">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <items>
+                                <navigationItem title="Your Contacts" id="Mba-G6-f0S">
+                                    <barButtonItem key="leftBarButtonItem" title="Back" id="O3W-ib-XCa">
+                                        <connections>
+                                            <segue destination="Afi-GK-f6Y" kind="show" id="c0g-rQ-o6l"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </navigationItem>
+                            </items>
+                        </navigationBar>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="2xw-xC-61U">
+                                <rect key="frame" x="0.0" y="72" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2xw-xC-61U" id="dAi-DA-I3X">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="EeB-iI-1bt" id="veI-DP-KER"/>
+                            <outlet property="delegate" destination="EeB-iI-1bt" id="K6N-oT-Fos"/>
+                        </connections>
+                    </tableView>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TxC-FQ-v9D" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1186" y="-534"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="FQH-j0-b3y">
@@ -231,10 +278,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QJT-ag-ZMH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="776" y="263"/>
+            <point key="canvasLocation" x="776" y="287"/>
         </scene>
     </scenes>
     <resources>
         <image name="facebook login.png" width="300" height="46"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="c0g-rQ-o6l"/>
+    </inferredMetricsTieBreakers>
 </document>
