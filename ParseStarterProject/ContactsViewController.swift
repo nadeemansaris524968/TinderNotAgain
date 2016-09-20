@@ -14,7 +14,7 @@ import ParseFacebookUtilsV4
 
 class ContactsViewController: UITableViewController {
     
-    var usernames = [String]()
+    var emails = [String]()
     
     var images = [UIImage]()
 
@@ -33,7 +33,7 @@ class ContactsViewController: UITableViewController {
                 
                 for result in results as! [PFUser]{
                     
-                    self.usernames.append(result.username!)
+                    self.emails.append(result["email"]! as! String)
                     
                     let imageFile = result["image"] as! PFFile
                     
@@ -78,14 +78,14 @@ class ContactsViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return usernames.count
+        return emails.count
     }
 
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
 
-        cell.textLabel?.text = usernames[indexPath.row]
+        cell.textLabel?.text = emails[indexPath.row]
         
         if images.count > indexPath.row {
             cell.imageView?.image = images[indexPath.row]
@@ -94,5 +94,12 @@ class ContactsViewController: UITableViewController {
         return cell
     }
  
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let url = NSURL(string: "mailto:" + emails[indexPath.row])
+        
+        UIApplication.sharedApplication().openURL(url!)
+        
+    }
 
 }

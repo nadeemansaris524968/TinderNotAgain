@@ -144,7 +144,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
-                                <navigationItem title="Your Contacts" id="Mba-G6-f0S">
+                                <navigationItem title="Your Matches" id="Mba-G6-f0S">
                                     <barButtonItem key="leftBarButtonItem" title="Back" id="O3W-ib-XCa">
                                         <connections>
                                             <segue destination="Afi-GK-f6Y" kind="show" id="c0g-rQ-o6l"/>
